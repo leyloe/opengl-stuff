@@ -1,0 +1,14 @@
+.{
+    .name = "15 simulator",
+
+    .version = "0.0.0",
+
+    .dependencies = .{},
+
+    .paths = .{
+        "src",
+        "build.zig",
+        "build.zig.zon",
+        ".gitignore",
+    },
+}
