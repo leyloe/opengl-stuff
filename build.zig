@@ -13,9 +13,14 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    exe.addIncludePath(b.path("deps/include"));
+
+    // Sources
+    exe.addCSourceFile(.{ .file = b.path("deps/src/glad.c") });
+
+    // Libraries
     exe.linkLibC();
     exe.linkSystemLibrary("glfw3");
-    exe.linkSystemLibrary("gl");
 
     b.installArtifact(exe);
 }
