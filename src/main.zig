@@ -8,7 +8,19 @@ pub const gl = @cImport({
     @cInclude("GL/gl.h");
 });
 
+fn error_callback(@"error": c_int, description: [*c]const u8) callconv(.C) void {
+    std.debug.print("{s}\n", .{description});
+    _ = @"error";
+}
+
 pub fn main() !void {
+    const prev_error = glfw.glfwSetErrorCallback(error_callback);
+
+    if (prev_error != null) {
+        std.debug.print("glfwSetErrorCallback failed\n", .{});
+        return;
+    }
+
     std.debug.print("initializing glfw\n", .{});
 
     if (glfw.glfwInit() != glfw.GLFW_TRUE) {
