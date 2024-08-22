@@ -32,6 +32,7 @@ pub fn main() !void {
     std.debug.print("glfw initialized\n", .{});
 
     // Window hints
+    // OpenGL 4.6
     c.glfwWindowHint(c.GLFW_CONTEXT_VERSION_MAJOR, 4);
     c.glfwWindowHint(c.GLFW_CONTEXT_VERSION_MINOR, 3);
     c.glfwWindowHint(c.GLFW_OPENGL_PROFILE, c.GLFW_OPENGL_CORE_PROFILE);
