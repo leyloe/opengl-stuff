@@ -70,7 +70,9 @@ pub fn main() void {
         // check and call events and swap the buffers
         c.glfwPollEvents();
         c.glfwSwapBuffers(window);
-        c.glClearColor(0.07, 0.13, 0.17, 1.0);
+
+        // color
+        c.glClearColor(0.2, 0.3, 0.3, 1.0);
         c.glClear(c.GL_COLOR_BUFFER_BIT);
     }
 }
