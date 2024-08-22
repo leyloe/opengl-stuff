@@ -10,22 +10,21 @@ fn error_callback(@"error": c_int, description: [*c]const u8) callconv(.C) void 
     _ = @"error";
 }
 
+fn framebuffer_size_callback(_: ?*c.GLFWwindow, width: c_int, height: c_int) callconv(.C) void {
+    c.glViewport(0, 0, width, height);
+}
+
 fn processInput(window: *c.GLFWwindow) void {
     if (c.glfwGetKey(window, c.GLFW_KEY_ESCAPE) == c.GLFW_PRESS)
         c.glfwSetWindowShouldClose(window, c.GLFW_TRUE);
 }
 
 pub fn main() void {
-    // Error callback
-    const prev_error = c.glfwSetErrorCallback(error_callback);
-
-    if (prev_error != null) {
+    // Set error callback
+    if (c.glfwSetErrorCallback(error_callback) != null) {
         std.debug.print("glfwSetErrorCallback failed\n", .{});
         return;
     }
-
-    // Initialize GLFW
-    std.debug.print("initializing glfw\n", .{});
 
     if (c.glfwInit() != c.GLFW_TRUE) {
         std.debug.print("glfwInit failed\n", .{});
@@ -34,12 +33,10 @@ pub fn main() void {
 
     defer c.glfwTerminate();
 
-    std.debug.print("glfw initialized\n", .{});
-
     // Window hints
     // OpenGL 4.6
     c.glfwWindowHint(c.GLFW_CONTEXT_VERSION_MAJOR, 4);
-    c.glfwWindowHint(c.GLFW_CONTEXT_VERSION_MINOR, 3);
+    c.glfwWindowHint(c.GLFW_CONTEXT_VERSION_MINOR, 6);
     c.glfwWindowHint(c.GLFW_OPENGL_PROFILE, c.GLFW_OPENGL_CORE_PROFILE);
 
     // Create window
@@ -48,16 +45,21 @@ pub fn main() void {
         return;
     };
 
+    // Defer runs stuff when the function returns or ends I guess
     defer c.glfwDestroyWindow(window);
 
     c.glfwMakeContextCurrent(window);
+
+    if (c.glfwSetFramebufferSizeCallback(window, framebuffer_size_callback) != null) {
+        std.debug.print("glfwSetFramebufferSizeCallback failed\n", .{});
+        return;
+    }
 
     if (c.gladLoadGL() == 0) {
         std.debug.print("Failed to initialize GLAD\n", .{});
         return;
     }
 
-    // Viewer
     c.glViewport(0, 0, 800, 600);
 
     // render loop
@@ -66,7 +68,6 @@ pub fn main() void {
         processInput(window);
 
         // rendering commands here
-
         // check and call events and swap the buffers
         c.glfwPollEvents();
         c.glfwSwapBuffers(window);
