@@ -13,7 +13,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    exe.addIncludePath(b.path("deps/include"));
+    exe.addIncludePath(b.path("Libraries/include"));
 
     // Sources
     exe.addCSourceFile(.{ .file = b.path("deps/src/glad.c") });
