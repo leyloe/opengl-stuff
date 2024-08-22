@@ -5,9 +5,8 @@ const c = @cImport({
     @cInclude("GLFW/glfw3.h");
 });
 
-fn error_callback(@"error": c_int, description: [*c]const u8) callconv(.C) void {
+fn error_callback(_: c_int, description: [*c]const u8) callconv(.C) void {
     std.debug.print("{s}\n", .{description});
-    _ = @"error";
 }
 
 fn framebuffer_size_callback(_: ?*c.GLFWwindow, width: c_int, height: c_int) callconv(.C) void {
