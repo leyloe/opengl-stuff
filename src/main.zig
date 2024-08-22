@@ -10,7 +10,12 @@ fn error_callback(@"error": c_int, description: [*c]const u8) callconv(.C) void 
     _ = @"error";
 }
 
-pub fn main() !void {
+fn processInput(window: *c.GLFWwindow) void {
+    if (c.glfwGetKey(window, c.GLFW_KEY_ESCAPE) == c.GLFW_PRESS)
+        c.glfwSetWindowShouldClose(window, c.GLFW_TRUE);
+}
+
+pub fn main() void {
     // Error callback
     const prev_error = c.glfwSetErrorCallback(error_callback);
 
@@ -38,12 +43,10 @@ pub fn main() !void {
     c.glfwWindowHint(c.GLFW_OPENGL_PROFILE, c.GLFW_OPENGL_CORE_PROFILE);
 
     // Create window
-    const window = c.glfwCreateWindow(800, 600, "My Title", null, null);
-
-    if (window == null) {
+    const window: *c.GLFWwindow = c.glfwCreateWindow(800, 600, "My Title", null, null) orelse {
         std.debug.print("glfwCreateWindow failed\n", .{});
         return;
-    }
+    };
 
     defer c.glfwDestroyWindow(window);
 
@@ -62,6 +65,7 @@ pub fn main() !void {
     c.glfwSwapBuffers(window);
 
     while (c.glfwWindowShouldClose(window) == c.GLFW_FALSE) {
+        processInput(window);
         c.glfwPollEvents();
     }
 }

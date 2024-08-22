@@ -16,7 +16,7 @@ pub fn build(b: *std.Build) void {
     exe.addIncludePath(b.path("Libraries/include"));
 
     // Sources
-    exe.addCSourceFile(.{ .file = b.path("deps/src/glad.c") });
+    exe.addCSourceFile(.{ .file = b.path("Libraries/src/glad.c") });
 
     // Libraries
     exe.linkLibC();
