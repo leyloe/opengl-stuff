@@ -60,12 +60,17 @@ pub fn main() void {
     // Viewer
     c.glViewport(0, 0, 800, 600);
 
-    c.glClearColor(0.07, 0.13, 0.17, 1.0);
-    c.glClear(c.GL_COLOR_BUFFER_BIT);
-    c.glfwSwapBuffers(window);
-
+    // render loop
     while (c.glfwWindowShouldClose(window) == c.GLFW_FALSE) {
+        // input
         processInput(window);
+
+        // rendering commands here
+
+        // check and call events and swap the buffers
         c.glfwPollEvents();
+        c.glfwSwapBuffers(window);
+        c.glClearColor(0.07, 0.13, 0.17, 1.0);
+        c.glClear(c.GL_COLOR_BUFFER_BIT);
     }
 }
