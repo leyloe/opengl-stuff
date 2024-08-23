@@ -1,7 +1,7 @@
 const SCR_WIDTH = 800;
 const SCR_HEIGHT = 600;
 
-const vertexShaderSource: [*c]const u8 =
+const vertexShaderSource: ?[*]const u8 =
     \\#version 330 core
     \\layout (location = 0) in vec3 aPos;
     \\void main()
