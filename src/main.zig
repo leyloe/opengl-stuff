@@ -1,3 +1,15 @@
+const SCR_WIDTH = 800;
+const SCR_HEIGHT = 600;
+
+const vertexShaderSource: [*c]const u8 =
+    \\#version 330 core
+    \\layout (location = 0) in vec3 aPos;
+    \\void main()
+    \\{
+    \\   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    \\}\x00
+;
+
 const std = @import("std");
 
 const clib = @cImport({
@@ -10,6 +22,7 @@ fn error_callback(_: c_int, description: [*c]const u8) callconv(.C) void {
 }
 
 fn framebuffer_size_callback(_: ?*clib.GLFWwindow, width: c_int, height: c_int) callconv(.C) void {
+    std.debug.print("the window is being resized to {} {}\n", .{ width, height });
     clib.glViewport(0, 0, width, height);
 }
 
@@ -39,7 +52,7 @@ pub fn main() void {
     clib.glfwWindowHint(clib.GLFW_OPENGL_PROFILE, clib.GLFW_OPENGL_CORE_PROFILE);
 
     // Create window
-    const window: *clib.GLFWwindow = clib.glfwCreateWindow(800, 600, "My Title", null, null) orelse {
+    const window: *clib.GLFWwindow = clib.glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "My Title", null, null) orelse {
         std.debug.print("glfwCreateWindow failed\n", .{});
         return;
     };
@@ -60,6 +73,32 @@ pub fn main() void {
     }
 
     clib.glViewport(0, 0, 800, 600);
+
+    const vertices = [_]f32{
+        -0.5, -0.5, 0.0,
+        0.5,  -0.5, 0.0,
+        0.0,  0.5,  0.0,
+    };
+
+    var VBO: u32 = undefined;
+    clib.glGenBuffers(1, &VBO);
+    clib.glBindBuffer(clib.GL_ARRAY_BUFFER, VBO);
+    clib.glBufferData(clib.GL_ARRAY_BUFFER, vertices.len * @sizeOf(f32), &vertices, clib.GL_STATIC_DRAW);
+
+    const vertexShader: u32 = undefined;
+    clib.glShaderSource(vertexShader, 1, &vertexShaderSource, null);
+    clib.glCompileShader(vertexShader);
+
+    // check if compile shader was successful
+    var success: c_int = undefined;
+    var infoLog: [512]u8 = undefined;
+    clib.glGetShaderiv(vertexShader, clib.GL_COMPILE_STATUS, &success);
+
+    if (success == 0) {
+        clib.glGetShaderInfoLog(vertexShader, 512, null, &infoLog);
+        std.debug.print("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n{s}", .{infoLog});
+        return;
+    }
 
     // render loop
     while (clib.glfwWindowShouldClose(window) == clib.GLFW_FALSE) {
