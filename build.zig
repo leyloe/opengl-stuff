@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const c_files = &.{ "libraries/src/glad.c", "src/main.c" };
+const C_FILES = &.{ "libraries/src/glad.c", "src/main.c" };
 
 pub fn build(b: *std.Build) void {
     const target = b.host;
@@ -16,7 +16,7 @@ pub fn build(b: *std.Build) void {
 
     exe.addIncludePath(b.path("libraries/include"));
 
-    exe.addCSourceFiles(.{ .files = c_files });
+    exe.addCSourceFiles(.{ .files = C_FILES });
 
     exe.linkLibC();
     exe.linkSystemLibrary("glfw3");

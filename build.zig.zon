@@ -1,5 +1,5 @@
 .{
-    .name = "15 simulator",
+    .name = "opengl-stuff",
 
     .version = "0.0.0",
 
