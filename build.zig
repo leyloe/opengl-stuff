@@ -20,6 +20,13 @@ pub fn build(b: *std.Build) void {
 
     exe.linkLibC();
     exe.linkSystemLibrary("glfw3");
+    exe.linkSystemLibrary("gl");
 
     b.installArtifact(exe);
+
+    // zig build run
+    const run_exe = b.addRunArtifact(exe);
+
+    const run_step = b.step("run", "Run the application");
+    run_step.dependOn(&run_exe.step);
 }
