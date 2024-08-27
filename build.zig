@@ -20,7 +20,7 @@ pub fn build(b: *std.Build) void {
 
     exe.linkLibC();
     exe.linkSystemLibrary("glfw3");
-    exe.linkSystemLibrary("gl");
+    // exe.linkSystemLibrary("gl");
 
     b.installArtifact(exe);
 
