@@ -4,7 +4,7 @@ const c_files = &.{ "libraries/src/glad.c", "src/main.c" };
 
 pub fn build(b: *std.Build) void {
     const target = b.host;
-    const optimize = std.builtin.OptimizeMode.ReleaseSmall;
+    const optimize = std.builtin.OptimizeMode.ReleaseFast;
 
     const exe = b.addExecutable(.{
         .name = "main",
