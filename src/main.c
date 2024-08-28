@@ -18,7 +18,7 @@ static unsigned int CompileShader(unsigned int type, const char *source)
         char *message = (char *)alloca(length * sizeof(char));
         glGetShaderInfoLog(id, length, &length, message);
         printf("Failed to compile %s shader!\n", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"));
-        printf("%s\n", message);
+        printf("%s", message);
         glDeleteShader(id);
         return 0;
     }
