@@ -33,7 +33,7 @@ static unsigned int compileShader(unsigned int type, const char *source)
     if (!success)
     {
         glGetShaderInfoLog(id, 512, NULL, infoLog);
-        printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n %s", infoLog);
+        printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s", infoLog);
     }
 
     return id;
